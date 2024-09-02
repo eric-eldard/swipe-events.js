@@ -16,11 +16,31 @@
                 display: none;
                 position: absolute;
                 width: 75%;
+                z-index: 99;
+            }
+
+            #stats {
+                bottom: 0;
+                display: block;
+                font-family: monospace;
+                font-size: 8px;
+                left: 0;
+                position: absolute;
+                text-align: left;
+                z-index: 98;
             }
         </style>
         <script>
             window.addEventListener("DOMContentLoaded", e => {
                 SwipeEvents.toggleTelemetryLogging();
+
+                // prevents context menu from showing when compass is long-pressed
+                document.getElementById("compass").oncontextmenu = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                    return false;
+                };
             });
 
             document.addEventListener("touchstart", e => {
@@ -35,11 +55,20 @@
                 compass.style.left = touchX - (width / 2) + "px";
                 compass.style.top = touchY - (width / 2) + "px";
             });
+
+            document.addEventListener("swipe", e => {
+                const stats = document.getElementById("stats");
+                stats.innerHTML = JSON.stringify(e.detail, null, 2)
+                    .replaceAll(/\n/g, "<br>")
+                    .replaceAll(" ", "&nbsp;");
+            });
         </script>
     </head>
     <body>
         <h1>swipe-events.js demo</h1>
         <p>Open the JavaScript console on any touch-enabled device, then tap anywhere to see telemetry logging</p>
         <img id="compass" src="compass.png">
+
+    <div id="stats"></div>
     </body>
 </html>
