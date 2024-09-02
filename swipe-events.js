@@ -19,8 +19,8 @@
  *         event time: ${e.detail.eventTime}
  *         ongoing:    ${e.detail.ongoing}
  *         direction:  ${e.detail.cardinal4dir}
- *     `}
- * }
+ *     `)
+ * })
  */
 var SwipeEvents = SwipeEvents || (() => {
 
@@ -207,7 +207,7 @@ var SwipeEvents = SwipeEvents || (() => {
          *     if (SwipeEvents.telemetryLoggingEnabled()) {
          *         console.log("I will log also");
          *     }
-         * }
+         * })
          */
         telemetryLoggingEnabled: function() {
             return logEvents;
@@ -219,7 +219,7 @@ var SwipeEvents = SwipeEvents || (() => {
          * @memberof SwipeEvents
          * @returns {boolean} <code>true</code> if logging is enabled as a result of this operation, <code>false</code> if it's disabled
          * @example
-         * SwipeEvents.toggleTelemetryLogging();
+         * SwipeEvents.toggleTelemetryLogging()
          */
         toggleTelemetryLogging: function() {
             logEvents = !logEvents;

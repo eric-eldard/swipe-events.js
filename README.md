@@ -20,8 +20,8 @@ document.addEventListener("swipe", e => {
         event time: ${e.detail.eventTime}
         ongoing:    ${e.detail.ongoing}
         direction:  ${e.detail.cardinal4dir}
-    `}
-}
+    `)
+})
 ```
 
 <a name="SwipeEvents"></a>
@@ -46,7 +46,7 @@ document.addEventListener("swipe", e => {
     if (SwipeEvents.telemetryLoggingEnabled()) {
         console.log("I will log also");
     }
-}
+})
 ```
 <a name="SwipeEvents.toggleTelemetryLogging"></a>
 
@@ -58,7 +58,7 @@ Turn on/off console event logging (debug level). This is generally intended to b
 **Since**: 1.0  
 **Example**  
 ```js
-SwipeEvents.toggleTelemetryLogging();
+SwipeEvents.toggleTelemetryLogging()
 ```
 
 
