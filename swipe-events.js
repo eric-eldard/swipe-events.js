@@ -2,7 +2,7 @@
  * <p>A vanilla JavaScript library that publishes custom <code>swipe</code> events with telemetry from screen touch movement.</p>
  * <ul>
  *     <li>Swipe events are fired for every <code>touchmove</code>, <code>touchend</code>, and <code>touchcancel</code> event.</li>
- *     <li>A single tap will fire a swipe event. Though no event is fired for <code>touchstart</code>, one will still be fired for <code>touchend</code>.</li>
+ *     <li>A single tap will fire a swipe event. Though no swipe event is fired for <code>touchstart</code>, one will still be fired for <code>touchend</code>.</li>
  *     <li>Event publish rate is <code>touchmove</code> publish rate, which is up to as fast as screen refresh rate.</li>
  *     <li>All values are positive; use the cardinal directions to determine direction.</li>
  * </ul>
@@ -31,6 +31,16 @@ var SwipeEvents = SwipeEvents || (() => {
     let lastTouchY;
     let firstEventTime;
     let lastEventTime;
+
+    window.addEventListener("DOMContentLoaded", e => {
+        console.log(`
+            %cswipe-events.js%c v1.0 loaded
+                toggle logging to debug: %cSwipeEvents.toggleTelemetryLogging()%c
+                more info: https://github.com/eric-eldard/swipe-events.js
+        `.replace(/\n[ ]{12}/g, "\n"),
+            "color: green", "color: unset", "color: blue", "color: unset"
+        );
+    });
 
     document.addEventListener("touchstart", e => {
         touchStartX    = e.changedTouches[0].screenX;
