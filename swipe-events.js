@@ -43,8 +43,8 @@ var SwipeEvents = SwipeEvents || (() => {
     });
 
     document.addEventListener("touchstart", e => {
-        touchStartX    = e.changedTouches[0].screenX;
-        touchStartY    = e.changedTouches[0].screenY;
+        touchStartX    = e.changedTouches[0].clientX;
+        touchStartY    = e.changedTouches[0].clientY;
         lastTouchX     = touchStartX;
         lastTouchY     = touchStartY;
         firstEventTime = Date.now();
@@ -52,8 +52,8 @@ var SwipeEvents = SwipeEvents || (() => {
     });
 
     document.addEventListener("touchmove", e => {
-        const touchCurrentX = e.changedTouches[0].screenX;
-        const touchCurrentY = e.changedTouches[0].screenY;
+        const touchCurrentX = e.changedTouches[0].clientX;
+        const touchCurrentY = e.changedTouches[0].clientY;
         const eventTime     = Date.now();
 
         fireSwipeEvent(touchStartX, touchStartY, touchCurrentX, touchCurrentY, eventTime, true);
@@ -64,14 +64,14 @@ var SwipeEvents = SwipeEvents || (() => {
     });
 
     document.addEventListener("touchend", e => {
-        const touchEndX = e.changedTouches[0].screenX;
-        const touchEndY = e.changedTouches[0].screenY;
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
         fireSwipeEvent(touchStartX, touchStartY, touchEndX, touchEndY, Date.now(), false);
     });
 
     document.addEventListener("touchcancel", e => {
-        const touchEndX = e.changedTouches[0].screenX;
-        const touchEndY = e.changedTouches[0].screenY;
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
         fireSwipeEvent(touchStartX, touchStartY, touchEndX, touchEndY, Date.now(), false);
     });
 

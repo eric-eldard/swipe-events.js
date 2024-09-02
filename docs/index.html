@@ -1,24 +1,45 @@
 <html>
-	<head>
-		<title>swipe-events.js demo</title>
-		<script src="swipe-events.js"></script>
-		<style>
-			body {
-				font-family: Arial, sans-serif;
-				font-size: 24px;
-				text-align: center;
-			}
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+        <title>swipe-events.js demo</title>
+        <script src="swipe-events.js"></script>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                font-size: 14px;
+                overflow: hidden;
+                text-align: center;
+            }
 
-			img {
-				aspect-ratio: 1 / 1;
-				display: block;
-				width: 100%;
-			}
-		</style>
-	</head>
-	<body onload="SwipeEvents.toggleTelemetryLogging()">
-		<h1>swipe-events.js demo</h1>
-		<p>Open the JavaScript console on any touch-enabled device to see telemetry logging</p>
-		<img src="compass.png">
-	</body>
+            #compass {
+                aspect-ratio: 1 / 1;
+                display: none;
+                position: absolute;
+                width: 75%;
+            }
+        </style>
+        <script>
+            window.addEventListener("DOMContentLoaded", e => {
+                SwipeEvents.toggleTelemetryLogging();
+            });
+
+            document.addEventListener("touchstart", e => {
+                const touchX = e.changedTouches[0].clientX;
+                const touchY = e.changedTouches[0].clientY;
+
+                const compass = document.getElementById("compass");
+                compass.style.display = "block";
+
+                const width = compass.offsetWidth;
+
+                compass.style.left = touchX - (width / 2) + "px";
+                compass.style.top = touchY - (width / 2) + "px";
+            });
+        </script>
+    </head>
+    <body>
+        <h1>swipe-events.js demo</h1>
+        <p>Open the JavaScript console on any touch-enabled device, then tap anywhere to see telemetry logging</p>
+        <img id="compass" src="compass.png">
+    </body>
 </html>
