@@ -89,8 +89,8 @@
                 let touchX;
                 let touchY;
                 if (e.detail) {
-                    touchX = e.detail.touchEndX;
-                    touchY = e.detail.touchEndY;
+                    touchX = e.detail.currentX;
+                    touchY = e.detail.currentY;
                 }
                 else {
                     touchX = e.changedTouches[0].clientX;

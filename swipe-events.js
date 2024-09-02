@@ -25,12 +25,12 @@
 var SwipeEvents = SwipeEvents || (() => {
 
     let logEvents = false;
-    let touchStartX;
-    let touchStartY;
-    let lastTouchX;
-    let lastTouchY;
-    let firstEventTime;
-    let lastEventTime;
+    let originX;
+    let originY;
+    let lastX;
+    let lastY;
+    let firstEvent;
+    let lastEvent;
 
     window.addEventListener("DOMContentLoaded", e => {
         console.log(`
@@ -43,61 +43,61 @@ var SwipeEvents = SwipeEvents || (() => {
     });
 
     document.addEventListener("touchstart", e => {
-        touchStartX    = e.changedTouches[0].clientX;
-        touchStartY    = e.changedTouches[0].clientY;
-        lastTouchX     = touchStartX;
-        lastTouchY     = touchStartY;
-        firstEventTime = Date.now();
-        lastEventTime  = firstEventTime;
+        originX    = e.changedTouches[0].clientX;
+        originY    = e.changedTouches[0].clientY;
+        lastX      = originX;
+        lastY      = originY;
+        firstEvent = Date.now();
+        lastEvent  = firstEvent;
     });
 
     document.addEventListener("touchmove", e => {
-        const touchCurrentX = e.changedTouches[0].clientX;
-        const touchCurrentY = e.changedTouches[0].clientY;
-        const eventTime     = Date.now();
+        const touchX    = e.changedTouches[0].clientX;
+        const touchY    = e.changedTouches[0].clientY;
+        const eventTime = Date.now();
 
-        fireSwipeEvent(touchStartX, touchStartY, touchCurrentX, touchCurrentY, eventTime, true);
+        fireSwipeEvent(touchX, touchY, eventTime, true);
 
-        lastTouchX    = touchCurrentX;
-        lastTouchY    = touchCurrentY;
-        lastEventTime = eventTime;
+        lastX     = touchX;
+        lastY     = touchY;
+        lastEvent = eventTime;
     });
 
     document.addEventListener("touchend", e => {
         const touchEndX = e.changedTouches[0].clientX;
         const touchEndY = e.changedTouches[0].clientY;
-        fireSwipeEvent(touchStartX, touchStartY, touchEndX, touchEndY, Date.now(), false);
+        fireSwipeEvent(touchEndX, touchEndY, Date.now(), false);
     });
 
     document.addEventListener("touchcancel", e => {
         const touchEndX = e.changedTouches[0].clientX;
         const touchEndY = e.changedTouches[0].clientY;
-        fireSwipeEvent(touchStartX, touchStartY, touchEndX, touchEndY, Date.now(), false);
+        fireSwipeEvent(touchEndX, touchEndY, Date.now(), false);
     });
 
-    function fireSwipeEvent(startX, startY, endX, endY, eventTime, ongoing) {
-        const totalDistanceX = Math.abs(endX - startX);
-        const totalDistanceY = Math.abs(endY - startY);
+    function fireSwipeEvent(currentX, currentY, eventTime, ongoing) {
+        const totalDistanceX = Math.abs(currentX - originX);
+        const totalDistanceY = Math.abs(currentY - originY);
         const totalDistance  =  Math.hypot(totalDistanceX, totalDistanceY);
 
-        const latestDistanceX = Math.abs(endX - lastTouchX);
-        const latestDistanceY = Math.abs(endY - lastTouchY);
+        const latestDistanceX = Math.abs(currentX - lastX);
+        const latestDistanceY = Math.abs(currentY - lastY);
         const latestDistance  = Math.hypot(latestDistanceX, latestDistanceY);
 
-        const duration = eventTime - firstEventTime;
+        const duration = eventTime - firstEvent;
 
         const overallSpeedX = totalDistanceX / duration;
         const overallSpeedY = totalDistanceY / duration;
         const overallSpeed  = totalDistance  / duration;
 
-        const millisSinceLastEvent = eventTime - lastEventTime;
+        const millisSinceLastEvent = eventTime - lastEvent;
 
         const latestSpeedX = latestDistanceX / millisSinceLastEvent;
         const latestSpeedY = latestDistanceY / millisSinceLastEvent;
         const latestSpeed  = latestDistance  / millisSinceLastEvent;
 
-        const horizontalDir = startX > endX ? "W" : "E";
-        const verticalDir   = startY > endY ? "N" : "S";
+        const horizontalDir = originX > currentX ? "W" : "E";
+        const verticalDir   = originY > currentY ? "N" : "S";
         const theta         = Math.atan2(totalDistanceY, totalDistanceX) * (180 / Math.PI);
 
         const cardinal4dir = (totalDistanceX > totalDistanceY) ? horizontalDir : verticalDir;
@@ -112,12 +112,12 @@ var SwipeEvents = SwipeEvents || (() => {
                      * @property {boolean} ongoing         false if the triggering touch event is terminal (<code>touchend</code>, <code>touchcancel</code>)
                      * @property {string}  cardinal4dir    current direction from the origin: N &vert; S &vert; E &vert; W
                      * @property {string}  cardinal8dir    current direction from the origin: N &vert; S &vert; E &vert; W &vert; NE &vert; NW &vert; SE &vert; SW
-                     * @property {number}  touchStartX     X coordinate of the initial touch (from <code>touchstart</code>)
-                     * @property {number}  touchStartY     Y coordinate of the initial touch (from <code>touchstart</code>)
-                     * @property {number}  touchEndX       X coordinate of the latest touch event (from <code>touchmove</code> or <code>touchend</code>)
-                     * @property {number}  touchEndY       Y coordinate of the latest touch event (from <code>touchmove</code> or <code>touchend</code>)
-                     * @property {number}  totalDistanceX  total horizontal distance travelled in pixels from <code>touchStartX</code>
-                     * @property {number}  totalDistanceY  total vertical distance travelled in pixels from <code>TouchStartY</code>
+                     * @property {number}  originX         X coordinate of the initial touch (from <code>touchstart</code>)
+                     * @property {number}  originY         Y coordinate of the initial touch (from <code>touchstart</code>)
+                     * @property {number}  currentX        X coordinate of the latest touch event (from <code>touchmove</code> or <code>touchend</code>)
+                     * @property {number}  currentY        Y coordinate of the latest touch event (from <code>touchmove</code> or <code>touchend</code>)
+                     * @property {number}  totalDistanceX  total horizontal distance travelled in pixels from <code>originX</code>
+                     * @property {number}  totalDistanceY  total vertical distance travelled in pixels from <code>originY</code>
                      * @property {number}  totalDistance   total real distance travelled in pixels from <code>touchstart</code> origin
                      * @property {number}  latestDistanceX total horizontal linear distance travelled in pixels since last <code>swipe</code> event
                      * @property {number}  latestDistanceY total vertical linear distance travelled in pixels since last <code>swipe</code> event
@@ -135,10 +135,10 @@ var SwipeEvents = SwipeEvents || (() => {
                     "ongoing":         ongoing,
                     "cardinal4dir":    cardinal4dir,
                     "cardinal8dir":    cardinal8dir,
-                    "touchStartX":     startX,
-                    "touchStartY":     startY,
-                    "touchEndX":       endX,
-                    "touchEndY":       endY,
+                    "originX":         originX,
+                    "originY":         originY,
+                    "currentX":        currentX,
+                    "currentY":        currentY,
                     "totalDistanceX":  totalDistanceX,
                     "totalDistanceY":  totalDistanceY,
                     "totalDistance":   totalDistance,
@@ -166,10 +166,10 @@ var SwipeEvents = SwipeEvents || (() => {
                 ongoing:            ${e.detail.ongoing}
               %ccardinal 4 dir:     ${e.detail.cardinal4dir}
                 cardinal 8 dir:     ${e.detail.cardinal8dir}
-              %ctouch start X:      ${e.detail.touchStartX}
-                touch start Y:      ${e.detail.touchStartY}
-              %ctouch end X:        ${e.detail.touchEndX}
-                touch end Y:        ${e.detail.touchEndY}
+              %corigin X:           ${e.detail.originX}
+                origin Y:           ${e.detail.originY}
+              %ccurrent X:          ${e.detail.currentX}
+                current Y:          ${e.detail.currentY}
               %ctotal distance X:   ${e.detail.totalDistanceX}
                 total distance Y:   ${e.detail.totalDistanceY}
                 total distance:     ${e.detail.totalDistance}
