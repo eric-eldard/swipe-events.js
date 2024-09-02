@@ -19,8 +19,36 @@
                 z-index: 99;
             }
 
+            #cross {
+                display: none;
+                height: 100px;
+                position: absolute;
+                width: 100px:
+                z-index: 100;
+            }
+
+            #cross > div {
+                display: block;
+                left: 0;
+                position: absolute;
+                top: 0;
+            }
+
+            #horz {
+                border-bottom: 1px solid black;
+                margin: 50px 0;
+                width: 100px;
+            }
+
+            #vert {
+                border-right: 1px solid black;
+                height: 100px;
+                margin: 0 50px;
+            }
+
             #stats {
                 bottom: 0;
+                color: dimgray;
                 display: block;
                 font-family: monospace;
                 font-size: 8px;
@@ -44,30 +72,51 @@
             });
 
             document.addEventListener("touchstart", e => {
-                const touchX = e.changedTouches[0].clientX;
-                const touchY = e.changedTouches[0].clientY;
-
-                const compass = document.getElementById("compass");
-                compass.style.display = "block";
-
-                const width = compass.offsetWidth;
-
-                compass.style.left = touchX - (width / 2) + "px";
-                compass.style.top = touchY - (width / 2) + "px";
+                centerOnTouch("compass", e);
+                centerOnTouch("cross", e);
             });
 
             document.addEventListener("swipe", e => {
+                centerOnTouch("cross", e);
+
                 const stats = document.getElementById("stats");
-                stats.innerHTML = JSON.stringify(e.detail, null, 2)
+                 stats.innerHTML = JSON.stringify(e.detail, null, 2)
                     .replaceAll(/\n/g, "<br>")
                     .replaceAll(" ", "&nbsp;");
             });
+
+            function centerOnTouch(elemId, e) {
+                let touchX;
+                let touchY;
+                if (e.detail) {
+                    touchX = e.detail.touchEndX;
+                    touchY = e.detail.touchEndY;
+                }
+                else {
+                    touchX = e.changedTouches[0].clientX;
+                    touchY = e.changedTouches[0].clientY;
+                }
+
+                const elem = document.getElementById(elemId);
+                elem.style.display = "block";
+
+                const height = elem.offsetHeight;
+
+                elem.style.left = touchX - (height / 2) + "px";
+                elem.style.top = touchY - (height / 2) + "px";
+            }
         </script>
     </head>
     <body>
         <h1>swipe-events.js demo</h1>
-        <p>Open the JavaScript console on any touch-enabled device, then tap anywhere to see telemetry logging</p>
+        <p>Open the JavaScript console on any touch-enabled device, then swipe anywhere to see telemetry logging</p>
+
         <img id="compass" src="compass.png">
+
+        <div id="cross">
+            <div id="horz"></div>
+            <div id="vert"></div>
+        </div>
 
     <div id="stats"></div>
     </body>
