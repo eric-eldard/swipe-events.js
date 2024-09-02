@@ -2,7 +2,7 @@
  * <p>A vanilla JavaScript library that publishes custom <code>swipe</code> events with telemetry from screen touch movement.</p>
  * <ul>
  *     <li>Swipe events are fired for every <code>touchmove</code>, <code>touchend</code>, and <code>touchcancel</code> event.</li>
- *     <li>No swipe event is fired on <code>touchstart</code>, which does not have a direction and so is not a swipe.</li>
+ *     <li>A single tap will fire a swipe event. Though no swipe event is fired for <code>touchstart</code>, one will still be fired for <code>touchend</code>.</li>
  *     <li>Event publish rate is <code>touchmove</code> publish rate, which is up to as fast as screen refresh rate.</li>
  *     <li>All values are positive; use the cardinal directions to determine direction.</li>
  * </ul>
@@ -12,14 +12,15 @@
  * @author    Eric Eldard
  * @license   {@link https://github.com/eric-eldard/swipe-events.js/blob/main/LICENSE|MIT}
  * @see       {@link https://github.com/eric-eldard/swipe-events.js|swipe-events.js @ GitHub}
+ * @see       {@link https://eric-eldard.github.io/swipe-events.js|Demo}
  * @example
  * document.addEventListener("swipe", e => {
  *     console.debug(`
  *         event time: ${e.detail.eventTime}
  *         ongoing:    ${e.detail.ongoing}
  *         direction:  ${e.detail.cardinal4dir}
- *     `}
- * }
+ *     `)
+ * })
  */
 var SwipeEvents = SwipeEvents || (() => {
 
@@ -30,6 +31,16 @@ var SwipeEvents = SwipeEvents || (() => {
     let lastTouchY;
     let firstEventTime;
     let lastEventTime;
+
+    window.addEventListener("DOMContentLoaded", e => {
+        console.log(`
+            %cswipe-events.js%c v1.0 loaded
+                toggle logging to debug: %cSwipeEvents.toggleTelemetryLogging()%c
+                more info: https://github.com/eric-eldard/swipe-events.js
+        `.replace(/\n[ ]{12}/g, "\n"),
+            "color: green", "color: unset", "color: blue", "color: unset"
+        );
+    });
 
     document.addEventListener("touchstart", e => {
         touchStartX    = e.changedTouches[0].screenX;
@@ -75,9 +86,9 @@ var SwipeEvents = SwipeEvents || (() => {
 
         const duration = eventTime - firstEventTime;
 
-        const totalSpeedX = totalDistanceX / duration;
-        const totalSpeedY = totalDistanceY / duration;
-        const totalSpeed  = totalDistance  / duration;
+        const overallSpeedX = totalDistanceX / duration;
+        const overallSpeedY = totalDistanceY / duration;
+        const overallSpeed  = totalDistance  / duration;
 
         const millisSinceLastEvent = eventTime - lastEventTime;
 
@@ -111,9 +122,9 @@ var SwipeEvents = SwipeEvents || (() => {
                      * @property {number}  latestDistanceX total horizontal linear distance travelled in pixels since last <code>swipe</code> event
                      * @property {number}  latestDistanceY total vertical linear distance travelled in pixels since last <code>swipe</code> event
                      * @property {number}  latestDistance  total linear distance travelled in pixels since last <code>swipe</code> event
-                     * @property {number}  totalSpeedX     <code>totalDistanceX</code> / <code>duration</code>
-                     * @property {number}  totalSpeedY     <code>totalDistanceY</code> / <code>duration</code>
-                     * @property {number}  totalSpeed      <code>totalDistance</code> / <code>duration</code>
+                     * @property {number}  overallSpeedX   <code>totalDistanceX</code> / <code>duration</code>
+                     * @property {number}  overallSpeedY   <code>totalDistanceY</code> / <code>duration</code>
+                     * @property {number}  overallSpeed    <code>totalDistance</code> / <code>duration</code>
                      * @property {number}  latestSpeedX    <code>latestDistanceX</code> / milliseconds since last <code>swipe</code> event
                      * @property {number}  latestSpeedY    <code>latestDistanceY</code> / milliseconds since last <code>swipe</code> event
                      * @property {number}  latestSpeed     <code>latestDistance</code> / milliseconds since last <code>swipe</code> event
@@ -134,9 +145,9 @@ var SwipeEvents = SwipeEvents || (() => {
                     "latestDistanceX": latestDistanceX,
                     "latestDistanceY": latestDistanceY,
                     "latestDistance":  latestDistance,
-                    "totalSpeedX":     totalSpeedX,
-                    "totalSpeedY":     totalSpeedY,
-                    "totalSpeed":      totalSpeed,
+                    "overallSpeedX":   overallSpeedX,
+                    "overallSpeedY":   overallSpeedY,
+                    "overallSpeed":    overallSpeed,
                     "latestSpeedX":    latestSpeedX,
                     "latestSpeedY":    latestSpeedY,
                     "latestSpeed":     latestSpeed
@@ -165,9 +176,9 @@ var SwipeEvents = SwipeEvents || (() => {
               %clatest distance X:  ${e.detail.latestDistanceX}
                 latest distance Y:  ${e.detail.latestDistanceY}
                 latest distance:    ${e.detail.latestDistance}
-              %ctotal speed X:      ${e.detail.totalSpeedX}
-                total speed Y:      ${e.detail.totalSpeedY}
-                total speed:        ${e.detail.totalSpeed}
+              %coverall speed X:    ${e.detail.overallSpeedX}
+                overall speed Y:    ${e.detail.overallSpeedY}
+                overall speed:      ${e.detail.overallSpeed}
               %clatest speed X:     ${e.detail.latestSpeedX}
                 latest speed Y:     ${e.detail.latestSpeedY}
                 latest speed:       ${e.detail.latestSpeed}
@@ -196,7 +207,7 @@ var SwipeEvents = SwipeEvents || (() => {
          *     if (SwipeEvents.telemetryLoggingEnabled()) {
          *         console.log("I will log also");
          *     }
-         * }
+         * })
          */
         telemetryLoggingEnabled: function() {
             return logEvents;
@@ -208,7 +219,7 @@ var SwipeEvents = SwipeEvents || (() => {
          * @memberof SwipeEvents
          * @returns {boolean} <code>true</code> if logging is enabled as a result of this operation, <code>false</code> if it's disabled
          * @example
-         * SwipeEvents.toggleTelemetryLogging();
+         * SwipeEvents.toggleTelemetryLogging()
          */
         toggleTelemetryLogging: function() {
             logEvents = !logEvents;

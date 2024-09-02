@@ -67,26 +67,26 @@ SwipeEvents.toggleTelemetryLogging()
 **Kind**: global variable  
 **Properties**
 
-| Name | Type | Description |
-| --- | --- | --- |
-| eventTime | <code>number</code> | timestamp for the creation of this event, as milliseconds since Unix epoch |
-| duration | <code>number</code> | total time since <code>touchstart</code> event in milliseconds |
-| ongoing | <code>boolean</code> | false if the triggering touch event is terminal (<code>touchend</code>, <code>touchcancel</code>) |
-| cardinal4dir | <code>string</code> | current direction from the origin: N &vert; S &vert; E &vert; W |
-| cardinal8dir | <code>string</code> | current direction from the origin: N &vert; S &vert; E &vert; W &vert; NE &vert; NW &vert; SE &vert; SW |
-| touchStartX | <code>number</code> | X coordinate of the initial touch (from <code>touchstart</code>) |
-| touchStartY | <code>number</code> | Y coordinate of the initial touch (from <code>touchstart</code>) |
-| touchEndX | <code>number</code> | X coordinate of the latest touch event (from <code>touchmove</code> or <code>touchend</code>) |
-| touchEndY | <code>number</code> | Y coordinate of the latest touch event (from <code>touchmove</code> or <code>touchend</code>) |
-| totalDistanceX | <code>number</code> | total horizontal distance travelled in pixels from <code>touchStartX</code> |
-| totalDistanceY | <code>number</code> | total vertical distance travelled in pixels from <code>TouchStartY</code> |
-| totalDistance | <code>number</code> | total real distance travelled in pixels from <code>touchstart</code> origin |
+| Name            | Type | Description |
+|-----------------| --- | --- |
+| eventTime       | <code>number</code> | timestamp for the creation of this event, as milliseconds since Unix epoch |
+| duration        | <code>number</code> | total time since <code>touchstart</code> event in milliseconds |
+| ongoing         | <code>boolean</code> | false if the triggering touch event is terminal (<code>touchend</code>, <code>touchcancel</code>) |
+| cardinal4dir    | <code>string</code> | current direction from the origin: N &vert; S &vert; E &vert; W |
+| cardinal8dir    | <code>string</code> | current direction from the origin: N &vert; S &vert; E &vert; W &vert; NE &vert; NW &vert; SE &vert; SW |
+| touchStartX     | <code>number</code> | X coordinate of the initial touch (from <code>touchstart</code>) |
+| touchStartY     | <code>number</code> | Y coordinate of the initial touch (from <code>touchstart</code>) |
+| touchEndX       | <code>number</code> | X coordinate of the latest touch event (from <code>touchmove</code> or <code>touchend</code>) |
+| touchEndY       | <code>number</code> | Y coordinate of the latest touch event (from <code>touchmove</code> or <code>touchend</code>) |
+| totalDistanceX  | <code>number</code> | total horizontal distance travelled in pixels from <code>touchStartX</code> |
+| totalDistanceY  | <code>number</code> | total vertical distance travelled in pixels from <code>TouchStartY</code> |
+| totalDistance   | <code>number</code> | total real distance travelled in pixels from <code>touchstart</code> origin |
 | latestDistanceX | <code>number</code> | total horizontal linear distance travelled in pixels since last <code>swipe</code> event |
 | latestDistanceY | <code>number</code> | total vertical linear distance travelled in pixels since last <code>swipe</code> event |
-| latestDistance | <code>number</code> | total linear distance travelled in pixels since last <code>swipe</code> event |
-| totalSpeedX | <code>number</code> | <code>totalDistanceX</code> / <code>duration</code> |
-| totalSpeedY | <code>number</code> | <code>totalDistanceY</code> / <code>duration</code> |
-| totalSpeed | <code>number</code> | <code>totalDistance</code> / <code>duration</code> |
-| latestSpeedX | <code>number</code> | <code>latestDistanceX</code> / milliseconds since last <code>swipe</code> event |
-| latestSpeedY | <code>number</code> | <code>latestDistanceY</code> / milliseconds since last <code>swipe</code> event |
-| latestSpeed | <code>number</code> | <code>latestDistance</code> / milliseconds since last <code>swipe</code> event |
+| latestDistance  | <code>number</code> | total linear distance travelled in pixels since last <code>swipe</code> event |
+| overallSpeedX   | <code>number</code> | <code>totalDistanceX</code> / <code>duration</code> |
+| overallSpeedY   | <code>number</code> | <code>totalDistanceY</code> / <code>duration</code> |
+| overallSpeed    | <code>number</code> | <code>totalDistance</code> / <code>duration</code> |
+| latestSpeedX    | <code>number</code> | <code>latestDistanceX</code> / milliseconds since last <code>swipe</code> event |
+| latestSpeedY    | <code>number</code> | <code>latestDistanceY</code> / milliseconds since last <code>swipe</code> event |
+| latestSpeed     | <code>number</code> | <code>latestDistance</code> / milliseconds since last <code>swipe</code> event |

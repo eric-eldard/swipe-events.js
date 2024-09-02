@@ -86,9 +86,9 @@ var SwipeEvents = SwipeEvents || (() => {
 
         const duration = eventTime - firstEventTime;
 
-        const totalSpeedX = totalDistanceX / duration;
-        const totalSpeedY = totalDistanceY / duration;
-        const totalSpeed  = totalDistance  / duration;
+        const overallSpeedX = totalDistanceX / duration;
+        const overallSpeedY = totalDistanceY / duration;
+        const overallSpeed  = totalDistance  / duration;
 
         const millisSinceLastEvent = eventTime - lastEventTime;
 
@@ -122,9 +122,9 @@ var SwipeEvents = SwipeEvents || (() => {
                      * @property {number}  latestDistanceX total horizontal linear distance travelled in pixels since last <code>swipe</code> event
                      * @property {number}  latestDistanceY total vertical linear distance travelled in pixels since last <code>swipe</code> event
                      * @property {number}  latestDistance  total linear distance travelled in pixels since last <code>swipe</code> event
-                     * @property {number}  totalSpeedX     <code>totalDistanceX</code> / <code>duration</code>
-                     * @property {number}  totalSpeedY     <code>totalDistanceY</code> / <code>duration</code>
-                     * @property {number}  totalSpeed      <code>totalDistance</code> / <code>duration</code>
+                     * @property {number}  overallSpeedX   <code>totalDistanceX</code> / <code>duration</code>
+                     * @property {number}  overallSpeedY   <code>totalDistanceY</code> / <code>duration</code>
+                     * @property {number}  overallSpeed    <code>totalDistance</code> / <code>duration</code>
                      * @property {number}  latestSpeedX    <code>latestDistanceX</code> / milliseconds since last <code>swipe</code> event
                      * @property {number}  latestSpeedY    <code>latestDistanceY</code> / milliseconds since last <code>swipe</code> event
                      * @property {number}  latestSpeed     <code>latestDistance</code> / milliseconds since last <code>swipe</code> event
@@ -145,9 +145,9 @@ var SwipeEvents = SwipeEvents || (() => {
                     "latestDistanceX": latestDistanceX,
                     "latestDistanceY": latestDistanceY,
                     "latestDistance":  latestDistance,
-                    "totalSpeedX":     totalSpeedX,
-                    "totalSpeedY":     totalSpeedY,
-                    "totalSpeed":      totalSpeed,
+                    "overallSpeedX":   overallSpeedX,
+                    "overallSpeedY":   overallSpeedY,
+                    "overallSpeed":    overallSpeed,
                     "latestSpeedX":    latestSpeedX,
                     "latestSpeedY":    latestSpeedY,
                     "latestSpeed":     latestSpeed
@@ -176,9 +176,9 @@ var SwipeEvents = SwipeEvents || (() => {
               %clatest distance X:  ${e.detail.latestDistanceX}
                 latest distance Y:  ${e.detail.latestDistanceY}
                 latest distance:    ${e.detail.latestDistance}
-              %ctotal speed X:      ${e.detail.totalSpeedX}
-                total speed Y:      ${e.detail.totalSpeedY}
-                total speed:        ${e.detail.totalSpeed}
+              %coverall speed X:    ${e.detail.overallSpeedX}
+                overall speed Y:    ${e.detail.overallSpeedY}
+                overall speed:      ${e.detail.overallSpeed}
               %clatest speed X:     ${e.detail.latestSpeedX}
                 latest speed Y:     ${e.detail.latestSpeedY}
                 latest speed:       ${e.detail.latestSpeed}
