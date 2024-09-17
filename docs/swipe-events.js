@@ -20,7 +20,7 @@
  *     console.debug(`
  *         event time: ${e.detail.eventTime}
  *         ongoing:    ${e.detail.ongoing}
- *         direction:  ${e.detail.cardinal4dir}
+ *         direction:  ${e.detail.cardinal4}
  *     `)
  * })
  */
@@ -108,13 +108,13 @@ var SwipeEvents = SwipeEvents || (() => {
 
         const horizontalDir = originX > currentX ? "W" : "E";
         const verticalDir   = originY > currentY ? "N" : "S";
-        const absAngle      = Math.atan2(totalDistanceY, totalDistanceX) * (180 / Math.PI);
+        const tangent       = Math.atan2(totalDistanceY, totalDistanceX) * (180 / Math.PI);
 
-        const cardinal4dir = (totalDistanceX > totalDistanceY) ? horizontalDir : verticalDir;
-        const cardinal8dir = (absAngle > 22.5 && absAngle < 67.5) ? verticalDir + horizontalDir : cardinal4dir;
+        const cardinal4 = (totalDistanceX > totalDistanceY) ? horizontalDir : verticalDir;
+        const cardinal8 = (tangent > 22.5 && tangent < 67.5) ? verticalDir + horizontalDir : cardinal4;
 
-        const radians       = Math.atan2(totalChangeInY, totalChangeInX);
-        const theta         = (radians < 0 ? (radians + 2 * Math.PI) : radians) * (180 / Math.PI);
+        const radians = Math.atan2(totalChangeInY, totalChangeInX);
+        const theta   = (radians < 0 ? (radians + 2 * Math.PI) : radians) * (180 / Math.PI);
 
         document.dispatchEvent(
             new CustomEvent("swipe", {
@@ -125,13 +125,13 @@ var SwipeEvents = SwipeEvents || (() => {
                      * @property {number}      duration        total time since <code>touchstart</code> event in milliseconds
                      * @property {boolean}     initial         true if the triggering touch event is <code>touchstart</code>
                      * @property {boolean}     ongoing         false if the triggering touch event is terminal (<code>touchend</code>, <code>touchcancel</code>)
-                     * @property {string}      cardinal4dir    current direction from the origin: N &vert; S &vert; E &vert; W
-                     * @property {string}      cardinal8dir    current direction from the origin: N &vert; S &vert; E &vert; W &vert; NE &vert; NW &vert; SE &vert; SW
+                     * @property {string}      cardinal4       current direction from the origin: N &vert; S &vert; E &vert; W
+                     * @property {string}      cardinal8       current direction from the origin: N &vert; S &vert; E &vert; W &vert; NE &vert; NW &vert; SE &vert; SW
                      * @property {number}      theta           the number of degrees from East, going clockwise (0=E, 90=S, 180=W, 270=N)
                      * @property {number}      originX         X coordinate of the initial touch (from <code>touchstart</code>)
                      * @property {number}      originY         Y coordinate of the initial touch (from <code>touchstart</code>)
-                     * @property {number}      currentX        X coordinate of the latest touch event (from <code>touchmove</code> or <code>touchend</code>)
-                     * @property {number}      currentY        Y coordinate of the latest touch event (from <code>touchmove</code> or <code>touchend</code>)
+                     * @property {number}      currentX        X coordinate of the latest touch event
+                     * @property {number}      currentY        Y coordinate of the latest touch event
                      * @property {number}      totalDistanceX  total horizontal distance travelled in pixels from <code>originX</code>
                      * @property {number}      totalDistanceY  total vertical distance travelled in pixels from <code>originY</code>
                      * @property {number}      totalDistance   total real distance travelled in pixels from <code>touchstart</code> origin
@@ -151,8 +151,8 @@ var SwipeEvents = SwipeEvents || (() => {
                     "duration":        duration,
                     "initial":         initial,
                     "ongoing":         ongoing,
-                    "cardinal4dir":    cardinal4dir,
-                    "cardinal8dir":    cardinal8dir,
+                    "cardinal4":       cardinal4,
+                    "cardinal8":       cardinal8,
                     "theta":           theta,
                     "originX":         originX,
                     "originY":         originY,
@@ -185,8 +185,8 @@ var SwipeEvents = SwipeEvents || (() => {
                 duration:           ${e.detail.duration}
                 initial:            ${e.detail.initial}
                 ongoing:            ${e.detail.ongoing}
-              %ccardinal 4 dir:     ${e.detail.cardinal4dir}
-                cardinal 8 dir:     ${e.detail.cardinal8dir}
+              %ccardinal 4:         ${e.detail.cardinal4}
+                cardinal 8:         ${e.detail.cardinal8}
                 theta:              ${e.detail.theta}
               %corigin X:           ${e.detail.originX}
                 origin Y:           ${e.detail.originY}

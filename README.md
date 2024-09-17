@@ -19,7 +19,7 @@ document.addEventListener("swipe", e => {
     console.debug(`
         event time: ${e.detail.eventTime}
         ongoing:    ${e.detail.ongoing}
-        direction:  ${e.detail.cardinal4dir}
+        direction:  ${e.detail.cardinal4}
     `)
 })
 ```
@@ -76,8 +76,8 @@ SwipeEvents.toggleTelemetryLogging()
 | duration        | <code>number</code>     | total time since <code>touchstart</code> event in milliseconds                                                |
 | initial         | <code>boolean</code>    | true if the triggering touch event is <code>touchstart</code>                                                 |
 | ongoing         | <code>boolean</code>    | false if the triggering touch event is terminal (<code>touchend</code>, <code>touchcancel</code>)             |
-| cardinal4dir    | <code>string</code>     | current direction from the origin: N &vert; S &vert; E &vert; W                                               |
-| cardinal8dir    | <code>string</code>     | current direction from the origin: N &vert; S &vert; E &vert; W &vert; NE &vert; NW &vert; SE &vert; SW       |
+| cardinal4       | <code>string</code>     | current direction from the origin: N &vert; S &vert; E &vert; W                                               |
+| cardinal8       | <code>string</code>     | current direction from the origin: N &vert; S &vert; E &vert; W &vert; NE &vert; NW &vert; SE &vert; SW       |
 | theta           | <code>number</code>     | the number of degrees from East, going clockwise (0=E, 90=S, 180=W, 270=N)                                    |
 | originX         | <code>number</code>     | X coordinate of the initial touch (from <code>touchstart</code>)                                              |
 | originY         | <code>number</code>     | Y coordinate of the initial touch (from <code>touchstart</code>)                                              |
