@@ -71,18 +71,21 @@
                 };
             });
 
-            document.addEventListener("touchstart", e => {
-                centerOnTouch("compass", e);
-                centerOnTouch("cross", e);
-            });
-
             document.addEventListener("swipe", e => {
+                if (e.detail.initial) {
+                    centerOnTouch("compass", e);
+                }
+
                 centerOnTouch("cross", e);
 
-                const stats = document.getElementById("stats");
-                 stats.innerHTML = JSON.stringify(e.detail, null, 2)
-                    .replaceAll(/\n/g, "<br>")
-                    .replaceAll(" ", "&nbsp;");
+                // print just the type of the triggering TouchEvent
+                const eForLogging = e;
+                eForLogging.detail.event = e.detail.event.type;
+
+                document.getElementById("stats").innerHTML =
+                    JSON.stringify(eForLogging.detail, null, 2)
+                        .replaceAll(/\n/g, "<br>")
+                        .replaceAll(" ", "&nbsp;");
             });
 
             function centerOnTouch(elemId, e) {
