@@ -79,26 +79,18 @@
                 centerOnTouch("cross", e);
 
                 // print just the type of the triggering TouchEvent
-                const eForLogging = e;
-                eForLogging.detail.event = e.detail.event.type;
+                e.detail.event = e.detail.event.type;
 
+                // print event details to screen
                 document.getElementById("stats").innerHTML =
-                    JSON.stringify(eForLogging.detail, null, 2)
+                    JSON.stringify(e.detail, null, 2)
                         .replaceAll(/\n/g, "<br>")
                         .replaceAll(" ", "&nbsp;");
             });
 
             function centerOnTouch(elemId, e) {
-                let touchX;
-                let touchY;
-                if (e.detail) {
-                    touchX = e.detail.currentX;
-                    touchY = e.detail.currentY;
-                }
-                else {
-                    touchX = e.changedTouches[0].clientX;
-                    touchY = e.changedTouches[0].clientY;
-                }
+                const touchX = e.detail.currentX;
+                const touchY = e.detail.currentY;
 
                 const elem = document.getElementById(elemId);
                 elem.style.display = "block";
