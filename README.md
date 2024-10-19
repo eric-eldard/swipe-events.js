@@ -5,11 +5,12 @@ A vanilla JavaScript library that publishes custom <code>swipe</code> events wit
 - A single tap will fire at least two events (for <code>touchstart</code> and <code>touchend</code>).
 - All distances and speeds report 0 on <code>touchstart</code>.
 - Latest distances and speeds report 0 on <code>touchend</code> because it has the same coordinates as the prior event.
+- Cardinal directions and theta report null on <code>touchstart</code>, and also on <code>touchend</code> if there was no <code>touchmove</code> event.
 - Event publish rate is <code>touchmove</code> publish rate, which is up to as fast as screen refresh rate.
 - All values are positive; use the cardinal directions to determine direction.
 
 **Kind**: global namespace  
-**Version**: 1.1  
+**Version**: 1.1.1  
 **Author**: Eric Eldard  
 **License**: [MIT](https://github.com/eric-eldard/swipe-events.js/blob/main/LICENSE)  
 **See:** [Demo](https://eric-eldard.github.io/swipe-events.js)   

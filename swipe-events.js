@@ -5,12 +5,13 @@
  *     <li>A single tap will fire at least two events (for <code>touchstart</code> and <code>touchend</code>).</li>
  *     <li>All distances and speeds report 0 on <code>touchstart</code>.</li>
  *     <li>Latest distances and speeds report 0 on <code>touchend</code> because it has the same coordinates as the prior event.</li>
+ *     <li>Cardinal directions and theta report null on <code>touchstart</code>, and also on <code>touchend</code> if there was no <code>touchmove</code> event.</li>
  *     <li>Event publish rate is <code>touchmove</code> publish rate, which is up to as fast as screen refresh rate.</li>
  *     <li>All values are positive; use the cardinal directions to determine direction.</li>
  * </ul>
  * @namespace
  * @type      {!Object}
- * @version   1.1
+ * @version   1.1.1
  * @author    Eric Eldard
  * @license   {@link https://github.com/eric-eldard/swipe-events.js/blob/main/LICENSE|MIT}
  * @see       {@link https://github.com/eric-eldard/swipe-events.js|swipe-events.js @ GitHub}
@@ -106,15 +107,21 @@ var SwipeEvents = SwipeEvents || (() => {
         const latestSpeedY = (latestDistanceY / millisSinceLastEvent) || 0;
         const latestSpeed  = (latestDistance  / millisSinceLastEvent) || 0;
 
-        const horizontalDir = originX > currentX ? "W" : "E";
-        const verticalDir   = originY > currentY ? "N" : "S";
-        const tangent       = Math.atan2(totalDistanceY, totalDistanceX) * (180 / Math.PI);
+        let cardinal4 = null;
+        let cardinal8 = null;
+        let theta     = null;
 
-        const cardinal4 = (totalDistanceX > totalDistanceY) ? horizontalDir : verticalDir;
-        const cardinal8 = (tangent > 22.5 && tangent < 67.5) ? verticalDir + horizontalDir : cardinal4;
+        if (totalDistanceX > 0 || totalDistanceY > 0) {
+            const horizontalDir = originX > currentX ? "W" : "E";
+            const verticalDir   = originY > currentY ? "N" : "S";
+            const tangent       = Math.atan2(totalDistanceY, totalDistanceX) * (180 / Math.PI);
 
-        const radians = Math.atan2(totalChangeInY, totalChangeInX);
-        const theta   = (radians < 0 ? (radians + 2 * Math.PI) : radians) * (180 / Math.PI);
+            cardinal4 = (totalDistanceX > totalDistanceY) ? horizontalDir : verticalDir;
+            cardinal8 = (tangent > 22.5 && tangent < 67.5) ? verticalDir + horizontalDir : cardinal4;
+
+            const radians = Math.atan2(totalChangeInY, totalChangeInX);
+            theta         = (radians < 0 ? (radians + 2 * Math.PI) : radians) * (180 / Math.PI);
+        }
 
         document.dispatchEvent(
             new CustomEvent("swipe", {
