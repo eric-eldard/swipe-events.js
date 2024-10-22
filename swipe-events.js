@@ -35,7 +35,7 @@ var SwipeEvents = SwipeEvents || (() => {
     let firstEvent;
     let lastEvent;
 
-    window.addEventListener("DOMContentLoaded", e => {
+    window.addEventListener("DOMContentLoaded", () => {
         console.log(`
             %cswipe-events.js%c v1.0 loaded
                 toggle logging to debug: %cSwipeEvents.toggleTelemetryLogging()%c
@@ -89,7 +89,7 @@ var SwipeEvents = SwipeEvents || (() => {
 
         const totalDistanceX = Math.abs(totalChangeInX);
         const totalDistanceY = Math.abs(totalChangeInY);
-        const totalDistance  =  Math.hypot(totalDistanceX, totalDistanceY);
+        const totalDistance  = Math.hypot(totalDistanceX, totalDistanceY);
 
         const latestDistanceX = Math.abs(currentX - lastX);
         const latestDistanceY = Math.abs(currentY - lastY);
